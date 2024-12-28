@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Division Multiplexing - DigitalCommHub</title>
+    <link rel="stylesheet" href="general.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="tdm.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="tdm.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">DigitalCommHub</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#topics">Features</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="content-section container" id="tdm">
+      <h2 class="section-title">Time Division Multiplexing (TDM)</h2>
+
+      <div class="description-section">
+        <p>
+          <strong>Time Division Multiplexing (TDM)</strong> is a fundamental
+          multiplexing technique used in digital communication systems. It
+          enables multiple signals to share a single transmission medium by
+          assigning each signal a unique time slot. This method ensures that
+          signals do not overlap and makes efficient use of bandwidth resources.
+        </p>
+        <p>
+          TDM is extensively employed in various communication systems, such as
+          telecommunication networks, to transmit data, voice, and video
+          efficiently. By dividing time into discrete intervals, it facilitates
+          the sequential transmission of data streams from different sources
+          over a single channel.
+        </p>
+        <ul>
+          <li>
+            Allows multiple signals to transmit over a single communication
+            channel.
+          </li>
+          <li>
+            Optimizes bandwidth utilization and minimizes data transmission
+            delays.
+          </li>
+          <li>
+            Used in applications such as telecommunication, digital TV
+            broadcasting, and satellite communication.
+          </li>
+        </ul>
+      </div>
+
+      <section>
+        <h3>Types of TDM</h3>
+
+        <!-- Synchronous TDM -->
+        <div class="sub-section">
+          <h4>Synchronous TDM</h4>
+          <p class="description">
+            <strong>Description:</strong> Synchronous TDM divides time into
+            fixed slots that are pre-assigned to specific channels. Each channel
+            gets a dedicated time slot, regardless of whether it has data to
+            transmit. While this approach ensures predictable transmission, it
+            can lead to inefficiency when channels are idle.
+          </p>
+          <p>
+            For instance, in traditional telephone networks, Synchronous TDM was
+            used to assign specific time slots to telephone calls. Even if one
+            caller remained silent, their time slot was still reserved and left
+            unused.
+          </p>
+          <p class="application">
+            <strong>Application:</strong> Commonly used in early
+            telecommunication systems and circuit-switched networks where
+            predictable timing was essential.
+          </p>
+          <div class="interactive-section">
+            <p>
+              Enter the number of channels and time slots to visualize the
+              Synchronous TDM process:
+            </p>
+            <input
+              type="number"
+              placeholder="Number of channels"
+              id="sync-channels"
+            />
+            <input
+              type="number"
+              placeholder="Number of time slots"
+              id="sync-slots"
+            />
+            <button onclick="generateTDM('synchronous')">
+              Generate TDM Chart
+            </button>
+            <div class="tdm-chart">
+              <canvas id="sync-tdm-canvas" width="600" height="400"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Asynchronous TDM -->
+        <div class="sub-section">
+          <h4>Asynchronous TDM</h4>
+          <p class="description">
+            <strong>Description:</strong> Asynchronous TDM, also called
+            Statistical TDM, dynamically allocates time slots based on the
+            activity of each channel. Unlike Synchronous TDM, this method does
+            not assign time slots to idle channels, thus improving efficiency
+            and bandwidth utilization.
+          </p>
+          <p>
+            For example, in modern packet-switched networks, Asynchronous TDM
+            ensures that active users receive the time slots they need while
+            idle users do not occupy any slots. This dynamic allocation
+            significantly reduces waste and supports higher data rates for
+            active users.
+          </p>
+          <p class="application">
+            <strong>Application:</strong> Widely used in modern communication
+            systems, such as internet data transmission and wireless
+            communication networks, where traffic is bursty and unpredictable.
+          </p>
+          <div class="interactive-section">
+            <p>
+              Enter the number of channels and time slots to visualize the
+              Asynchronous TDM process:
+            </p>
+            <input
+              type="number"
+              placeholder="Number of channels"
+              id="async-channels"
+            />
+            <input
+              type="number"
+              placeholder="Number of time slots"
+              id="async-slots"
+            />
+            <button onclick="generateTDM('asynchronous')">
+              Generate TDM Chart
+            </button>
+            <div class="tdm-chart">
+              <canvas id="async-tdm-canvas" width="600" height="400"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Developed by
+          <a
+            href="https://www.linkedin.com/in/jaineel-chhatraliya"
+            target="_blank"
+            >Jaineel Chhatraliya</a
+          >
+          and
+          <a
+            href="https://www.linkedin.com/in/hetansh-shah-581732239"
+            target="_blank"
+            >Hetansh Shah</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

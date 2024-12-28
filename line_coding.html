@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Line Coding - DigitalCommHub</title>
+  <link rel="stylesheet" href="general.css" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="line_coding.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <script src="line_coding.js" defer></script>
+
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">DigitalCommHub</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#topics">Features</a></li>
+        <li><a href="index.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="content-section container" id="line-coding">
+    <h2 class="section-title">Line Coding Types</h2>
+
+    <div class="description-section">
+      <p>
+        <strong>Line Coding</strong> is the process of converting a digital
+        signal into a format suitable for transmission over a physical medium.
+        It plays a crucial role in ensuring that the data can be transmitted
+        efficiently and without errors. Line coding helps in various ways such
+        as:
+      </p>
+      <ul>
+        <li>Minimizing DC bias and providing synchronization.</li>
+        <li>Reducing signal interference and distortion.</li>
+        <li>Improving error detection and correction capabilities.</li>
+        <li>Optimizing bandwidth usage by controlling signal transitions.</li>
+      </ul>
+    </div>
+
+    <!-- Single Layer Section -->
+    <section>
+      <h3>
+        <li>Single Layer Line Coding</li>
+      </h3>
+      <div class="description-section">
+        <p>
+          <strong>Single-layer Line Coding</strong> is a method of encoding
+          digital data where each bit is represented by a specific voltage
+          level or waveform. It is a simple and efficient approach for
+          transmitting data, but may encounter limitations in complex
+          environments. Single-layer line coding offers:
+        </p>
+        <ul>
+          <li>Simple implementation with minimal computational overhead.</li>
+          <li>Low-cost design and easy integration with hardware.</li>
+          <li>Potential issues with DC bias and poor error detection.</li>
+          <li>
+            Lack of synchronization, making it less effective in noisy
+            environments.
+          </li>
+        </ul>
+      </div>
+
+      <!-- UNIPOLAR NRZ -->
+      <div class="sub-section">
+        <h4>Unipolar NRZ</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> Description:</strong> Uses a single voltage level to represent bits. A binary 1
+          is represented by a positive voltage level, while a binary 0 is represented by zero voltage (ground). There is
+          no return to zero between bits.
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Used in digital storage devices like
+          flash drives.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for UNIPOLAR-NRZ" id="unipolar-nrz-input" />
+        <button onclick="generateWave('unipolarnrz')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="unipolar-nrz-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- UNIPOLAR RZ -->
+      <div class="sub-section">
+        <h4>Unipolar RZ</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> In Unipolar RZ, a binary 1 is represented by a positive voltage for the first
+          half of the bit duration, followed by a return to zero voltage for the second half. A binary 0 is represented
+          by zero voltage for the entire bit duration.
+        </p>
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Used in data transmission systems where a return to zero helps distinguish bits.
+          Typically found in systems where the zero state is required for distinguishing between bits.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for UNIPOLAR RZ" id="unipolar-rz-input" />
+        <button onclick="generateWave('unipolarrz')">
+          Generate Graph
+        </button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="unipolar-rz-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- POLAR NRZ -->
+      <div class="sub-section">
+        <h4>POLAR NRZ</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> In Polar NRZ, a binary 1 is represented by a positive voltage, and a binary 0 is
+          represented by a negative voltage. There is no return to zero between bits.
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Commonly used in digital communication systems where two voltage levels
+          represent two different binary states.
+
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for POLAR NRZ" id="polar-nrz-input" />
+        <button onclick="generateWave('polarnrz')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="polar-nrz-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- POLAR RZ -->
+      <div class="sub-section">
+        <h4>POLAR RZ</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> In Polar RZ, a binary 1 is represented by a positive voltage for the first half of the bit duration, followed by zero voltage for the second half. A binary 0 is represented by a negative voltage for the first half and zero voltage for the second half.
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Used in communication systems where the return to zero helps to differentiate between consecutive bits.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for POLAR RZ" id="polar-rz-input" />
+        <button onclick="generateWave('polarrz')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="polar-rz-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h4>BIPOLAR - AMI</h4>
+        <!-- <p class="description"> 
+          <strong>Description:</strong>In Bipolar encoding, binary 1 is represented by alternating positive and negative
+          voltages, while binary 0 is represented by zero voltage. This encoding is self-synchronizing and has a better
+          signal balance.
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Often used in digital transmission systems where signal balance is important for
+          reducing interference.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for BIPOLAR" id="bipolar-ami-input" />
+        <button onclick="generateWave('bipolarami')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="bipolar-ami-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- BIPOLAR -->.
+      <div class="sub-section">
+        <h4>BIPOLAR - PSUDOTERNARY</h4>
+        <!-- <p class="description"> 
+          <strong>Description:</strong>In Bipolar encoding, binary 1 is represented by alternating positive and negative
+          voltages, while binary 0 is represented by zero voltage. This encoding is self-synchronizing and has a better
+          signal balance.
+        </p>
+        <p class="application">
+          <strong>Application:</strong> Often used in digital transmission systems where signal balance is important for
+          reducing interference.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for BIPOLAR" id="bipolar-pseudoternary-input" />
+        <button onclick="generateWave('bipolarpseudoternary')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="bipolar-pseudoternary-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Manchester Encoding -->
+      <div class="sub-section">
+        <h4>Biphase Manchester</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> Combines clock and data signals, with
+          a transition in the middle of each bit. High-to-low transition
+          represents 0, and low-to-high represents 1.
+        </p>
+        <p class="application">
+          <strong>Application:</strong>Used in Ethernet, RFID, and IR
+          communication.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for Manchester Encoding" id="manchester-input" />
+        <button onclick="generateWave('manchester')">Generate Graph</button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="manchester-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Differential Manchester -->
+      <div class="sub-section">
+        <h4>Biphase Differential Manchester</h4>
+        <!-- <p class="description">
+          <strong>Description:</strong> Has a transition at the start of each
+          bit, with an additional transition for a 1 bit. Helps minimize
+          errors and offers better synchronization.
+        </p>
+        <p class="application">
+          <strong>Application:</strong>Token Ring networks, magnetic storage.
+        </p> -->
+        <input type="text" placeholder="Enter binary sequence for Differential Manchester" id="diff-manchester-input" />
+        <button onclick="generateWave('diff_manchester')">
+          Generate Graph
+        </button>
+
+        <!-- Container for labels and canvas -->
+        <div class="waveform-container">
+          <!-- Vertical labels -->
+          <div class="vertical-labels">
+            <div class="label">+ve</div>
+            <div class="label">0</div>
+            <div class="label">-ve</div>
+          </div>
+          <!-- Canvas for the waveform -->
+          <canvas id="diff-manchester-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <br /><br />
+
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>
+        Developed by
+        <a href="https://www.linkedin.com/in/jaineel-chhatraliya" target="_blank">Jaineel Chhatraliya</a>
+        and
+        <a href="https://www.linkedin.com/in/hetansh-shah-581732239" target="_blank">Hetansh Shah</a>
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>

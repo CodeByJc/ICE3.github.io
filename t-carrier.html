@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>T-Carrier Hierarchy | DigitalCommHub</title>
+    <link rel="stylesheet" href="general.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="t-carrier.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">DigitalCommHub</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#topics">Features</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="container">
+      <h1>T-Carrier Hierarchy Explorer</h1>
+
+      <div class="input-section">
+        <label for="carrier-type">Select Carrier Type</label>
+        <select id="carrier-type">
+          <option value="ds0">DS0 (64 Kbps)</option>
+          <option value="t1">T1 Carrier</option>
+          <option value="t3">T3 Carrier</option>
+          <option value="t4">T4 Carrier</option>
+        </select>
+
+        <label for="bandwidth-input">Enter Channels</label>
+        <input
+          type="number"
+          id="bandwidth-input"
+          placeholder="Enter numeric value"
+        />
+
+        <button id="calculate-btn">Explore Hierarchy</button>
+      </div>
+
+      <div class="results-section" id="results-section">
+        <div id="tier-breakdowns"></div>
+      </div>
+
+      <div id="explanation-section">
+        <h3>Explanation</h3>
+        <p id="carrier-explanation">
+          Select a carrier type and enter a value to explore the T-carrier
+          hierarchy.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Developed by
+          <a
+            href="https://www.linkedin.com/in/jaineel-chhatraliya"
+            target="_blank"
+            >Jaineel Chhatraliya</a
+          >
+          and
+          <a
+            href="https://www.linkedin.com/in/hetansh-shah-581732239"
+            target="_blank"
+            >Hetansh Shah</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script src="t-carrier.js"></script>
+  </body>
+</html>

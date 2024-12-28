@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced DSSS Spectrum Visualization</title>
+    <link rel="stylesheet" href="general.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+
+      .container {
+        margin-top: 100px;
+        margin-bottom: 70px;
+      }
+
+      @keyframes signalPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes signalWave {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes noiseFlicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .signal-container {
+        perspective: 1000px;
+        height: 300px; /* Fixed height for container */
+        position: relative;
+        overflow: visible;
+      }
+
+      .signal-bar {
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-style: preserve-3d;
+        cursor: pointer;
+        will-change: transform, opacity;
+        transform-origin: bottom center; /* Set transform origin to bottom */
+        position: relative;
+        max-height: 200px; /* Maximum height for bars */
+      }
+
+      #originalSignalContainer,
+      #spreadSignalContainer,
+      #noisySignalContainer {
+        height: 200px; /* Fixed height for signal containers */
+        display: flex;
+        align-items: flex-end; /* Align bars to bottom */
+        justify-content: center;
+        gap: 1rem;
+        position: relative;
+        padding: 1rem;
+      }
+
+      .signal-tooltip {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      .noise-indicator {
+        transition: all 0.3s ease;
+        animation: noiseFlicker 1s infinite;
+      }
+
+      .advanced-control {
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .signal-bar:hover .signal-tooltip {
+        opacity: 1;
+      }
+
+      #spectrumCanvas {
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex flex-col items-center justify-center p-4"
+  >
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">DigitalCommHub</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#topics">Features</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+    <canvas id="spectrumCanvas" class="fixed"></canvas>
+
+    <div
+      class="container mx-auto max-w-5xl bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-8 relative z-10"
+    >
+      <h1
+        class="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 animate__animated animate__fadeInDown"
+      >
+        DSSS Spectrum Visualization
+      </h1>
+
+      <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="signal-container">
+          <h3 class="font-semibold mb-4 text-center text-blue-700">
+            Original Signal
+          </h3>
+          <div
+            id="originalSignalContainer"
+            class="flex space-x-4 justify-center relative"
+          >
+            <!-- Original signal bars will be generated here -->
+          </div>
+        </div>
+
+        <div class="signal-container">
+          <h3 class="font-semibold mb-4 text-center text-green-700">
+            Spread Signal
+          </h3>
+          <div
+            id="spreadSignalContainer"
+            class="flex space-x-4 justify-center relative"
+          >
+            <!-- Spread signal bars will be generated here -->
+          </div>
+        </div>
+
+        <div class="signal-container">
+          <h3 class="font-semibold mb-4 text-center text-red-700">
+            Noisy Spread Signal
+          </h3>
+          <div
+            id="noisySignalContainer"
+            class="flex space-x-4 justify-center relative"
+          >
+            <!-- Noisy signal bars will be generated here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="advanced-control p-6 rounded-xl shadow-lg mb-6">
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-lg font-bold mb-4 text-white">
+              Simulation Controls
+            </h4>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-white mb-2">Noise Level</label>
+                <input
+                  type="range"
+                  id="noiseSlider"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0.5"
+                  class="w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer"
+                />
+                <div
+                  id="noiseIndicator"
+                  class="h-2 w-full mt-2 bg-gradient-to-r from-green-400 to-red-500 rounded-full"
+                ></div>
+              </div>
+              <div>
+                <label class="block text-white mb-2">Spread Factor</label>
+                <input
+                  type="range"
+                  id="spreadSlider"
+                  min="2"
+                  max="8"
+                  step="2"
+                  value="4"
+                  class="w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center space-y-4">
+            <button
+              id="runSimulationBtn"
+              class="bg-white text-purple-600 font-bold py-3 px-6 rounded-full hover:bg-purple-100 transition-all transform hover:scale-105 hover:shadow-lg"
+            >
+              Run Simulation
+            </button>
+            <button
+              id="resetBtn"
+              class="bg-white text-red-600 font-bold py-3 px-6 rounded-full hover:bg-red-100 transition-all transform hover:scale-105 hover:shadow-lg"
+            >
+              Reset Simulation
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="simulationInfo"
+        class="bg-white/60 p-4 rounded-xl text-center opacity-0 transition-opacity"
+      >
+        <p id="simulationDetails" class="text-gray-700 font-medium"></p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Developed by
+          <a
+            href="https://www.linkedin.com/in/jaineel-chhatraliya"
+            target="_blank"
+            >Jaineel Chhatraliya</a
+          >
+          and
+          <a
+            href="https://www.linkedin.com/in/hetansh-shah-581732239"
+            target="_blank"
+            >Hetansh Shah</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      class AdvancedDSSS {
+        constructor() {
+          this.initializeElements();
+          this.initializeCanvas();
+          this.setupEventListeners();
+          this.initializeSignals();
+          this.animateBackground();
+        }
+
+        initializeElements() {
+          this.originalContainer = document.getElementById(
+            "originalSignalContainer"
+          );
+          this.spreadContainer = document.getElementById(
+            "spreadSignalContainer"
+          );
+          this.noisyContainer = document.getElementById("noisySignalContainer");
+          this.noiseSlider = document.getElementById("noiseSlider");
+          this.spreadSlider = document.getElementById("spreadSlider");
+          this.noiseIndicator = document.getElementById("noiseIndicator");
+          this.runBtn = document.getElementById("runSimulationBtn");
+          this.resetBtn = document.getElementById("resetBtn");
+          this.simulationInfo = document.getElementById("simulationInfo");
+          this.simulationDetails = document.getElementById("simulationDetails");
+        }
+
+        initializeCanvas() {
+          this.canvas = document.getElementById("spectrumCanvas");
+          this.ctx = this.canvas.getContext("2d");
+          this.resizeCanvas();
+          window.addEventListener("resize", () => this.resizeCanvas());
+        }
+
+        resizeCanvas() {
+          this.canvas.width = window.innerWidth;
+          this.canvas.height = window.innerHeight;
+        }
+
+        animateBackground() {
+          const particles = [];
+          const particleCount = 100;
+
+          for (let i = 0; i < particleCount; i++) {
+            particles.push({
+              x: Math.random() * this.canvas.width,
+              y: Math.random() * this.canvas.height,
+              radius: Math.random() * 2,
+              color: `rgba(${Math.random() * 255},${Math.random() * 255},${
+                Math.random() * 255
+              },0.5)`,
+              speedX: (Math.random() - 0.5) * 2,
+              speedY: (Math.random() - 0.5) * 2,
+            });
+          }
+
+          const animate = () => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            particles.forEach((p) => {
+              p.x += p.speedX;
+              p.y += p.speedY;
+
+              if (p.x < 0 || p.x > this.canvas.width) p.speedX *= -1;
+              if (p.y < 0 || p.y > this.canvas.height) p.speedY *= -1;
+
+              this.ctx.beginPath();
+              this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              this.ctx.fillStyle = p.color;
+              this.ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+          };
+
+          animate();
+        }
+
+        setupEventListeners() {
+          this.noiseSlider.addEventListener(
+            "input",
+            this.updateNoiseIndicator.bind(this)
+          );
+          this.runBtn.addEventListener("click", this.runSimulation.bind(this));
+          this.resetBtn.addEventListener(
+            "click",
+            this.resetSimulation.bind(this)
+          );
+        }
+
+        updateNoiseIndicator() {
+          const noiseLevel = this.noiseSlider.value;
+          this.noiseIndicator.style.background = `linear-gradient(to right, green ${
+            (1 - noiseLevel) * 100
+          }%, red ${noiseLevel * 100}%)`;
+        }
+
+        createSignalBar(value, color, container) {
+          const bar = document.createElement("div");
+          bar.classList.add(
+            "signal-bar",
+            "w-10",
+            "flex",
+            "flex-col",
+            "items-center",
+            "justify-end",
+            "relative"
+          );
+
+          // Set a base height and scale from there
+          bar.style.height = "100px"; // Base height
+          bar.style.backgroundColor = color;
+          bar.style.opacity = Math.abs(value);
+
+          // Limit the scale to a reasonable range (e.g., 0.1 to 2.0)
+          const scaleFactor = Math.max(0.1, Math.min(2.0, Math.abs(value)));
+          bar.style.transform = `scaleY(${scaleFactor})`;
+
+          const tooltip = document.createElement("div");
+          tooltip.classList.add("signal-tooltip");
+          tooltip.textContent = value.toFixed(2);
+          bar.appendChild(tooltip);
+
+          container.appendChild(bar);
+          return bar;
+        }
+        
+        initializeSignals() {
+          this.originalSignal = [1, 0, 1, 1, 0];
+          this.spreadSignal = [1, 0, 1, 1, 0, 1, 0, 1];
+          this.noisySignal = [...this.originalSignal];
+
+          this.renderSignals();
+        }
+
+        renderSignals() {
+          [
+            this.originalContainer,
+            this.spreadContainer,
+            this.noisyContainer,
+          ].forEach((container) => (container.innerHTML = ""));
+
+          this.originalSignal.forEach((bit) =>
+            this.createSignalBar(
+              bit,
+              "rgba(59, 130, 246, 0.7)",
+              this.originalContainer
+            )
+          );
+
+          this.spreadSignal.forEach((bit) =>
+            this.createSignalBar(
+              bit,
+              "rgba(16, 185, 129, 0.7)",
+              this.spreadContainer
+            )
+          );
+
+          this.noisySignal.forEach((bit) =>
+            this.createSignalBar(
+              bit,
+              "rgba(239, 68, 68, 0.7)",
+              this.noisyContainer
+            )
+          );
+        }
+
+        runSimulation() {
+          const noiseLevel = parseFloat(this.noiseSlider.value);
+          const spreadFactor = parseInt(this.spreadSlider.value);
+
+          this.noisySignal = this.originalSignal.map((bit) => {
+            const noise = (Math.random() * 2 - 1) * noiseLevel * spreadFactor;
+            return bit + noise;
+          });
+
+          this.renderSignals();
+          this.updateSimulationInfo(noiseLevel, spreadFactor);
+        }
+
+        updateSimulationInfo(noiseLevel, spreadFactor) {
+          this.simulationDetails.textContent = `Noise Level: ${noiseLevel.toFixed(
+            2
+          )} | Spread Factor: ${spreadFactor}`;
+          this.simulationInfo.style.opacity = 1;
+
+          setTimeout(() => {
+            this.simulationInfo.style.opacity = 0;
+          }, 3000);
+        }
+
+        resetSimulation() {
+          this.noisySignal = [...this.originalSignal];
+          this.noiseSlider.value = 0.5;
+          this.spreadSlider.value = 4;
+          this.updateNoiseIndicator();
+          this.renderSignals();
+        }
+      }
+
+      // Initialize the advanced simulation
+      document.addEventListener("DOMContentLoaded", () => new AdvancedDSSS());
+    </script>
+  </body>
+</html>
