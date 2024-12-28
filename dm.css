@@ -1,0 +1,28 @@
+.waveform-container {
+  display: flex;
+  align-items: center;
+}
+
+.y-axis-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px; /* Match the canvas height */
+  margin-right: 10px;
+}
+
+.label-positive,
+.label-zero,
+.label-negative {
+  text-align: center;
+  font-weight: bold;
+}
+
+.input-container {
+  margin-bottom: 10px;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+}

@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Modulation - DigitalCommHub</title>
+    <link rel="stylesheet" href="general.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="dm.css" />
+    <link rel="stylesheet" href="line_coding.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="dm.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">DigitalCommHub</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#topics">Features</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="content-section container" id="digital-modulation">
+      <h2 class="section-title">Digital Modulation Techniques</h2>
+
+      <div class="description-section">
+        <p>
+          <strong>Digital Modulation</strong> Digital Modulation is the process
+          of encoding digital data into a carrier wave for transmission over
+          communication channels. It plays a critical role in modern
+          communication systems by ensuring reliable data transfer. Digital
+          modulation helps in various ways such as:
+        </p>
+        <ul>
+          <li>
+            Enabling efficient use of bandwidth by adjusting the carrier wave's
+            characteristics to transmit more data in the same frequency
+            spectrum.
+          </li>
+          <li>
+            Improving resistance to noise and interference, allowing digital
+            signals to maintain integrity over long distances and through
+            various transmission mediums.
+          </li>
+          <li>
+            Supporting high-speed data transfer, making it essential for modern
+            applications like mobile communication, internet, and satellite
+            systems.
+          </li>
+          <li>
+            Enhancing data security through techniques like Phase Shift Keying
+            (PSK), which can be used to encode data in a way that is more
+            difficult for unauthorized users to intercept or decode.
+          </li>
+        </ul>
+      </div>
+
+      <!-- ASK -->
+      <div class="sub-section">
+        <h3>Amplitude Shift Keying (ASK)</h3>
+        <p class="description">
+          <strong>Description:</strong> Amplitude Shift Keying (ASK) is a
+          digital modulation technique where the amplitude of the carrier wave
+          is varied in accordance with the digital signal. It is a simple and
+          widely used modulation scheme in communication systems. ASK helps in
+          various ways such as:
+        </p>
+        <strong>Application:</strong>
+        <ul>
+          <li>
+            Efficiently encoding binary data by representing digital 1s and 0s
+            with high and low amplitudes of the carrier wave, respectively.
+          </li>
+          <li>
+            Simplifying transmitter and receiver design, as ASK requires less
+            complex hardware compared to other modulation techniques.
+          </li>
+          <li>
+            Providing easy implementation in low-frequency communication
+            systems, such as in basic data transmission applications like Morse
+            code.
+          </li>
+          <li>
+            Being susceptible to noise, making it less reliable in noisy
+            environments, but still useful in short-range, low-data-rate
+            applications.
+          </li>
+        </ul>
+        <!-- User input above the waveform -->
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="Enter binary sequence for ASK"
+            id="ask-input"
+          />
+          <button onclick="generateModulation('ask')">Generate Waveform</button>
+        </div>
+
+        <!-- Canvas for the waveform with Y-axis labels -->
+        <div class="waveform-container">
+          <!-- Y-axis labels -->
+          <div class="y-axis-labels">
+            <div class="label-positive">+ve</div>
+            <div class="label-zero">0</div>
+            <div class="label-negative">-ve</div>
+          </div>
+
+          <!-- Canvas for the waveform -->
+          <canvas id="ask-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- FSK -->
+      <div class="sub-section">
+        <h3>Frequency Shift Keying (FSK)</h3>
+        <p class="description">
+          <strong>Description:</strong> Frequency Shift Keying (FSK) is a
+          digital modulation technique where the frequency of the carrier wave
+          is varied according to the digital signal. It is commonly used in
+          communication systems to transmit data efficiently over various
+          distances. FSK helps in various ways such as:
+        </p>
+        <strong>Application:</strong>
+        <ul>
+          <li>
+            Efficiently encoding binary data by switching between two distinct
+            frequencies for digital 1s and 0s.
+          </li>
+          <li>
+            Providing improved noise immunity compared to Amplitude Shift Keying
+            (ASK), making it suitable for higher reliability in noisy
+            environments.
+          </li>
+          <li>
+            Supporting both low and high-frequency applications, including radio
+            communication systems, telemetry, and wireless communication.
+          </li>
+          <li>
+            Allowing for secure data transmission, as frequency variations are
+            harder to intercept or decode than amplitude changes.
+          </li>
+        </ul>
+
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="Enter binary sequence for FSK"
+            id="fsk-input"
+          />
+          <button onclick="generateModulation('fsk')">Generate Waveform</button>
+        </div>
+
+        <div class="waveform-container">
+          <div class="y-axis-labels">
+            <span>+ve</span>
+            <span>0</span>
+            <span>-ve</span>
+          </div>
+          <canvas id="fsk-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- PSK -->
+      <div class="sub-section">
+        <h3>Phase Shift Keying (PSK)</h3>
+        <p class="description">
+          <strong>Description:</strong> Phase Shift Keying (PSK) is a digital
+          modulation technique where the phase of the carrier wave is varied
+          according to the digital signal. It is widely used in communication
+          systems due to its efficiency in utilizing bandwidth and its ability
+          to resist noise. PSK helps in various ways such as:
+        </p>
+        <strong>Application:</strong>
+        <ul>
+          <li>
+            Efficiently encoding binary data by shifting the phase of the
+            carrier wave to represent digital 1s and 0s.
+          </li>
+          <li>
+            Providing better noise immunity than Amplitude Shift Keying (ASK)
+            and Frequency Shift Keying (FSK), making it suitable for noisy
+            environments.
+          </li>
+          <li>
+            Enabling high data rates and bandwidth efficiency, especially in
+            digital communication systems like satellite communication and
+            wireless networks.
+          </li>
+          <li>
+            Supporting multiple variations, such as Quadrature Phase Shift
+            Keying (QPSK), which allows encoding more bits per symbol, enhancing
+            data throughput.
+          </li>
+        </ul>
+
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="Enter binary sequence for PSK"
+            id="psk-input"
+          />
+          <button onclick="generateModulation('psk')">Generate Waveform</button>
+        </div>
+
+        <div class="waveform-container">
+          <div class="y-axis-labels">
+            <span>+ve</span>
+            <span>0</span>
+            <span>-ve</span>
+          </div>
+          <canvas id="psk-canvas" width="600" height="200"></canvas>
+        </div>
+      </div>
+
+    </div> 
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Developed by
+          <a
+            href="https://www.linkedin.com/in/jaineel-chhatraliya"
+            target="_blank"
+            >Jaineel Chhatraliya</a
+          >
+          and
+          <a
+            href="https://www.linkedin.com/in/hetansh-shah-581732239"
+            target="_blank"
+            >Hetansh Shah</a
+          >
+        </p>
+      </div>
+    </footer>
+
+  </body>
+</html>

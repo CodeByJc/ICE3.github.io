@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Communication Concepts</title>
+    <link rel="stylesheet" href="general.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="calculators.css" />
+    <script src="calculators.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">DigitalCommHub</a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#topics">Features</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Frequency Calculator -->
+    <div class="calculator">
+      <h2>Frequency Calculator</h2>
+      <p><strong>Formula:</strong> Frequency (f) = 1 / Period (T)</p>
+      <label for="period">Enter Period (T) in seconds:</label>
+      <input type="number" id="period" placeholder="Enter period in seconds" />
+      <button onclick="calculateFrequency()">Calculate Frequency</button>
+      <p id="frequency-result" class="result"></p>
+    </div>
+
+    <!-- Nyquist Rate Calculator -->
+    <div class="calculator">
+      <h2>Nyquist Rate Calculator</h2>
+      <p>
+        <strong>Formula:</strong> Nyquist Rate = 2 × Bandwidth × log₂(Levels)
+      </p>
+      <label for="nyquist-bandwidth">Enter Bandwidth (Hz):</label>
+      <input
+        type="number"
+        id="nyquist-bandwidth"
+        placeholder="Enter bandwidth in Hz"
+      />
+      <label for="nyquist-levels">Enter Signal Levels (L):</label>
+      <input
+        type="number"
+        id="nyquist-levels"
+        placeholder="Enter number of levels"
+      />
+      <button onclick="calculateNyquistRate()">Calculate Nyquist Rate</button>
+      <p id="nyquist-result" class="result"></p>
+    </div>
+
+    <!-- Shannon Capacity Calculator -->
+    <div class="calculator">
+      <h2>Shannon Capacity Calculator</h2>
+      <p>
+        <strong>Formula:</strong> Shannon Capacity = Bandwidth × log₂(1 + SNR)
+      </p>
+      <label for="shannon-bandwidth">Enter Bandwidth (Hz):</label>
+      <input
+        type="number"
+        id="shannon-bandwidth"
+        placeholder="Enter bandwidth in Hz"
+      />
+      <label for="shannon-snr">Enter Signal-to-Noise Ratio (SNR):</label>
+      <input type="number" id="shannon-snr" placeholder="Enter SNR" />
+      <button onclick="calculateShannonCapacity()">Calculate Capacity</button>
+      <p id="shannon-result" class="result"></p>
+    </div>
+
+    <!-- Bandwidth-Delay Product Calculator -->
+    <div class="calculator">
+      <h2>Bandwidth-Delay Product Calculator</h2>
+      <p>
+        <strong>Formula:</strong> Bandwidth-Delay Product = Bandwidth × Delay
+      </p>
+      <label for="bandwidth">Enter Bandwidth (bps):</label>
+      <input
+        type="number"
+        id="bandwidth"
+        placeholder="Enter bandwidth in bps"
+      />
+      <label for="delay">Enter Delay (seconds):</label>
+      <input type="number" id="delay" placeholder="Enter delay in seconds" />
+      <button onclick="calculateBandwidthDelay()">Calculate Product</button>
+      <p id="bandwidth-delay-result" class="result"></p>
+    </div>
+
+    <!-- Signal-to-Noise Ratio Calculator -->
+    <div class="calculator">
+      <h2>Signal-to-Noise Ratio (SNR) Calculator</h2>
+      <p><strong>Formula:</strong> SNR (dB) = 10 × log₁₀(Signal / Noise)</p>
+      <label for="signal-power">Enter Signal Power:</label>
+      <input type="number" id="signal-power" placeholder="Enter signal power" />
+      <label for="noise-power">Enter Noise Power:</label>
+      <input type="number" id="noise-power" placeholder="Enter noise power" />
+      <button onclick="calculateSNR()">Calculate SNR</button>
+      <p id="snr-result" class="result"></p>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Developed by
+          <a
+            href="https://www.linkedin.com/in/jaineel-chhatraliya"
+            target="_blank"
+            >Jaineel Chhatraliya</a
+          >
+          and
+          <a
+            href="https://www.linkedin.com/in/hetansh-shah-581732239"
+            target="_blank"
+            >Hetansh Shah</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
