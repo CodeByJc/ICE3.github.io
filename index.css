@@ -147,7 +147,7 @@ body * {
 /* Topics Section with Advanced Hover Effects */
 .topics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2em;
   padding: 4em 2em;
   background-color: var(--background-color);
