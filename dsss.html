@@ -1,129 +1,168 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Advanced DSSS Spectrum Visualization</title>
+    <title>DSSS - Digital Communication Concepts</title>
     <link rel="stylesheet" href="general.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-      rel="stylesheet"
-    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
       body {
-        overflow-x: hidden;
-        overflow-y: scroll;
+        background-color: #f5f5f5;
+        padding: 20px;
       }
 
       .container {
-        margin-top: 100px;
-        margin-bottom: 70px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 5rem;
+        margin-bottom: 3rem;
       }
 
-      @keyframes signalPulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.1);
-        }
+      h1 {
+        color: #4285f4;
+        margin-bottom: 2rem;
+        text-align: center;
       }
 
-      @keyframes signalWave {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-        100% {
-          transform: translateY(0);
-        }
+      .input-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
       }
 
-      @keyframes noiseFlicker {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.7;
-        }
+      .input-group {
+        margin-bottom: 1rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="range"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+      }
+
+      .control-panel {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+        flex-wrap: wrap;
+      }
+
+      button {
+        background: #00bcd4;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background: #008ba3;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
       }
 
       .signal-container {
-        perspective: 1000px;
-        height: 300px; /* Fixed height for container */
-        position: relative;
-        overflow: visible;
-      }
-
-      .signal-bar {
-        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform-style: preserve-3d;
-        cursor: pointer;
-        will-change: transform, opacity;
-        transform-origin: bottom center; /* Set transform origin to bottom */
-        position: relative;
-        max-height: 200px; /* Maximum height for bars */
-      }
-
-      #originalSignalContainer,
-      #spreadSignalContainer,
-      #noisySignalContainer {
-        height: 200px; /* Fixed height for signal containers */
-        display: flex;
-        align-items: flex-end; /* Align bars to bottom */
-        justify-content: center;
-        gap: 1rem;
-        position: relative;
+        margin: 1rem 0;
         padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        position: relative;
       }
 
-      .signal-tooltip {
-        position: absolute;
-        top: -25px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.8rem;
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-        white-space: nowrap;
+      .signal-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
-      .noise-indicator {
-        transition: all 0.3s ease;
-        animation: noiseFlicker 1s infinite;
+      .animation-status {
+        font-size: 0.8em;
+        color: #666;
       }
 
-      .advanced-control {
-        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      canvas {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        width: 100%;
+        height: 120px;
       }
 
-      .signal-bar:hover .signal-tooltip {
-        opacity: 1;
+      .error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
       }
 
-      #spectrumCanvas {
-        pointer-events: none;
+      .info-text {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .animation-controls {
+        margin-top: 1rem;
+      }
+
+      .slider-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .slider-container label {
+        min-width: 120px;
+        margin-bottom: 0;
+      }
+
+      .progress-indicator {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: -1;
+        height: 100%;
+        width: 2px;
+        background-color: rgba(66, 133, 244, 0.5);
+        pointer-events: none;
+        transition: left 0.1s linear;
       }
     </style>
   </head>
-  <body
-    class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex flex-col items-center justify-center p-4"
-  >
+  <body>
+
     <header>
       <nav class="navbar">
         <div class="logo">
@@ -136,114 +175,80 @@
         </ul>
       </nav>
     </header>
-    <canvas id="spectrumCanvas" class="fixed"></canvas>
 
-    <div
-      class="container mx-auto max-w-5xl bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-8 relative z-10"
-    >
-      <h1
-        class="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 animate__animated animate__fadeInDown"
-      >
-        DSSS Spectrum Visualization
-      </h1>
+    <div class="container">
+      <h1>Animated DSSS Signal Generator</h1>
 
-      <div class="grid grid-cols-3 gap-6 mb-8">
-        <div class="signal-container">
-          <h3 class="font-semibold mb-4 text-center text-blue-700">
-            Original Signal
-          </h3>
-          <div
-            id="originalSignalContainer"
-            class="flex space-x-4 justify-center relative"
-          >
-            <!-- Original signal bars will be generated here -->
+      <div class="input-section">
+        <p class="info-text">
+          Enter your binary data sequence and watch how DSSS modulation works in
+          real-time.
+        </p>
+
+        <div class="input-group">
+          <label for="dataInput">Data Sequence:</label>
+          <input
+            type="text"
+            id="dataInput"
+            placeholder="Enter binary sequence (e.g., 1010)"
+            value="1010"
+          />
+          <div id="dataError" class="error"></div>
+        </div>
+
+        <div class="input-group">
+          <label for="chipRate">Chip Rate (chips per bit):</label>
+          <input type="number" id="chipRate" min="2" max="16" value="8" />
+          <div id="chipError" class="error"></div>
+        </div>
+
+        <div class="animation-controls">
+          <div class="slider-container">
+            <label for="animationSpeed">Animation Speed:</label>
+            <input
+              type="range"
+              id="animationSpeed"
+              min="1"
+              max="100"
+              value="50"
+            />
           </div>
         </div>
 
-        <div class="signal-container">
-          <h3 class="font-semibold mb-4 text-center text-green-700">
-            Spread Signal
-          </h3>
-          <div
-            id="spreadSignalContainer"
-            class="flex space-x-4 justify-center relative"
-          >
-            <!-- Spread signal bars will be generated here -->
-          </div>
-        </div>
-
-        <div class="signal-container">
-          <h3 class="font-semibold mb-4 text-center text-red-700">
-            Noisy Spread Signal
-          </h3>
-          <div
-            id="noisySignalContainer"
-            class="flex space-x-4 justify-center relative"
-          >
-            <!-- Noisy signal bars will be generated here -->
-          </div>
-        </div>
-      </div>
-
-      <div class="advanced-control p-6 rounded-xl shadow-lg mb-6">
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <h4 class="text-lg font-bold mb-4 text-white">
-              Simulation Controls
-            </h4>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-white mb-2">Noise Level</label>
-                <input
-                  type="range"
-                  id="noiseSlider"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value="0.5"
-                  class="w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer"
-                />
-                <div
-                  id="noiseIndicator"
-                  class="h-2 w-full mt-2 bg-gradient-to-r from-green-400 to-red-500 rounded-full"
-                ></div>
-              </div>
-              <div>
-                <label class="block text-white mb-2">Spread Factor</label>
-                <input
-                  type="range"
-                  id="spreadSlider"
-                  min="2"
-                  max="8"
-                  step="2"
-                  value="4"
-                  class="w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center space-y-4">
-            <button
-              id="runSimulationBtn"
-              class="bg-white text-purple-600 font-bold py-3 px-6 rounded-full hover:bg-purple-100 transition-all transform hover:scale-105 hover:shadow-lg"
-            >
-              Run Simulation
-            </button>
-            <button
-              id="resetBtn"
-              class="bg-white text-red-600 font-bold py-3 px-6 rounded-full hover:bg-red-100 transition-all transform hover:scale-105 hover:shadow-lg"
-            >
-              Reset Simulation
-            </button>
-          </div>
+        <div class="control-panel">
+          <button id="startBtn" onclick="startAnimation()">
+            Start Animation
+          </button>
+          <button id="pauseBtn" onclick="togglePause()" disabled>Pause</button>
+          <button id="resetBtn" onclick="resetDemo()">Reset</button>
         </div>
       </div>
 
-      <div
-        id="simulationInfo"
-        class="bg-white/60 p-4 rounded-xl text-center opacity-0 transition-opacity"
-      >
-        <p id="simulationDetails" class="text-gray-700 font-medium"></p>
+      <div class="signal-container">
+        <div class="signal-label">
+          <span>Original Data Signal</span>
+          <span class="animation-status" id="dataStatus"></span>
+        </div>
+        <canvas id="dataCanvas"></canvas>
+        <div class="progress-indicator" id="dataProgress"></div>
+      </div>
+
+      <div class="signal-container">
+        <div class="signal-label">
+          <span>Spreading Sequence (PN Code)</span>
+          <span class="animation-status" id="pnStatus"></span>
+        </div>
+        <canvas id="pnCanvas"></canvas>
+        <div class="progress-indicator" id="pnProgress"></div>
+      </div>
+
+      <div class="signal-container">
+        <div class="signal-label">
+          <span>Spread Signal (DSSS Output)</span>
+          <span class="animation-status" id="outputStatus"></span>
+        </div>
+        <canvas id="outputCanvas"></canvas>
+        <div class="progress-indicator" id="outputProgress"></div>
       </div>
     </div>
 
@@ -251,223 +256,234 @@
       <div class="footer-content">
         <p>
           Developed by
-          <a
-            href="https://www.linkedin.com/in/jaineel-chhatraliya"
-            target="_blank"
-            >Jaineel Chhatraliya</a
-          >
+          <a href="https://www.linkedin.com/in/jaineel-chhatraliya" target="_blank">Jaineel Chhatraliya</a>
           and
-          <a
-            href="https://www.linkedin.com/in/hetansh-shah-581732239"
-            target="_blank"
-            >Hetansh Shah</a
-          >
+          <a href="https://www.linkedin.com/in/hetansh-shah-581732239" target="_blank">Hetansh Shah</a>
         </p>
       </div>
     </footer>
 
     <script>
-      class AdvancedDSSS {
-        constructor() {
-          this.initializeElements();
-          this.initializeCanvas();
-          this.setupEventListeners();
-          this.initializeSignals();
-          this.animateBackground();
+      let animationFrame;
+      let isPaused = false;
+      let progress = 0;
+      let signals = {
+        data: [],
+        pn: [],
+        output: [],
+      };
+
+      // Canvas setup
+      const canvases = ["dataCanvas", "pnCanvas", "outputCanvas"];
+      canvases.forEach((id) => {
+        const canvas = document.getElementById(id);
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      });
+
+      function validateInput() {
+        const dataInput = document.getElementById("dataInput").value;
+        const chipRate = parseInt(document.getElementById("chipRate").value);
+        let isValid = true;
+
+        if (!/^[01]+$/.test(dataInput)) {
+          document.getElementById("dataError").textContent =
+            "Please enter only 1s and 0s";
+          isValid = false;
+        } else {
+          document.getElementById("dataError").textContent = "";
         }
 
-        initializeElements() {
-          this.originalContainer = document.getElementById(
-            "originalSignalContainer"
-          );
-          this.spreadContainer = document.getElementById(
-            "spreadSignalContainer"
-          );
-          this.noisyContainer = document.getElementById("noisySignalContainer");
-          this.noiseSlider = document.getElementById("noiseSlider");
-          this.spreadSlider = document.getElementById("spreadSlider");
-          this.noiseIndicator = document.getElementById("noiseIndicator");
-          this.runBtn = document.getElementById("runSimulationBtn");
-          this.resetBtn = document.getElementById("resetBtn");
-          this.simulationInfo = document.getElementById("simulationInfo");
-          this.simulationDetails = document.getElementById("simulationDetails");
+        if (chipRate < 2 || chipRate > 16) {
+          document.getElementById("chipError").textContent =
+            "Chip rate must be between 2 and 16";
+          isValid = false;
+        } else {
+          document.getElementById("chipError").textContent = "";
         }
 
-        initializeCanvas() {
-          this.canvas = document.getElementById("spectrumCanvas");
-          this.ctx = this.canvas.getContext("2d");
-          this.resizeCanvas();
-          window.addEventListener("resize", () => this.resizeCanvas());
-        }
+        return isValid;
+      }
 
-        resizeCanvas() {
-          this.canvas.width = window.innerWidth;
-          this.canvas.height = window.innerHeight;
-        }
+      function drawSignal(canvasId, signal, color, progress) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
 
-        animateBackground() {
-          const particles = [];
-          const particleCount = 100;
+        ctx.clearRect(0, 0, width, height);
 
-          for (let i = 0; i < particleCount; i++) {
-            particles.push({
-              x: Math.random() * this.canvas.width,
-              y: Math.random() * this.canvas.height,
-              radius: Math.random() * 2,
-              color: `rgba(${Math.random() * 255},${Math.random() * 255},${
-                Math.random() * 255
-              },0.5)`,
-              speedX: (Math.random() - 0.5) * 2,
-              speedY: (Math.random() - 0.5) * 2,
-            });
+        // Draw zero line
+        ctx.beginPath();
+        ctx.strokeStyle = "#ddd";
+        ctx.moveTo(0, height / 2);
+        ctx.lineTo(width, height / 2);
+        ctx.stroke();
+
+        if (signal.length === 0) return;
+
+        const yCenter = height / 2;
+        const xScale = width / signal.length;
+        const visiblePoints = Math.floor(signal.length * progress);
+
+        // Draw signal up to progress point
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < visiblePoints; i++) {
+          const x = i * xScale;
+          const y = yCenter - signal[i] * yCenter * 0.4;
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            // Draw vertical transition line
+            const prevY = yCenter - signal[i - 1] * yCenter * 0.4;
+            ctx.lineTo(x, prevY);
+            ctx.lineTo(x, y);
           }
 
-          const animate = () => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            particles.forEach((p) => {
-              p.x += p.speedX;
-              p.y += p.speedY;
-
-              if (p.x < 0 || p.x > this.canvas.width) p.speedX *= -1;
-              if (p.y < 0 || p.y > this.canvas.height) p.speedY *= -1;
-
-              this.ctx.beginPath();
-              this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-              this.ctx.fillStyle = p.color;
-              this.ctx.fill();
-            });
-
-            requestAnimationFrame(animate);
-          };
-
-          animate();
+          // Draw horizontal line
+          const nextX = Math.min((i + 1) * xScale, width);
+          ctx.lineTo(nextX, y);
         }
 
-        setupEventListeners() {
-          this.noiseSlider.addEventListener(
-            "input",
-            this.updateNoiseIndicator.bind(this)
-          );
-          this.runBtn.addEventListener("click", this.runSimulation.bind(this));
-          this.resetBtn.addEventListener(
-            "click",
-            this.resetSimulation.bind(this)
-          );
+        ctx.stroke();
+
+        // Update progress indicator
+        const progressBar = document.getElementById(
+          canvasId.replace("Canvas", "Progress")
+        );
+        progressBar.style.left = `${progress * 100}%`;
+      }
+
+      function generatePNSequence(length) {
+        return Array.from({ length }, () => (Math.random() > 0.5 ? 1 : -1));
+      }
+
+      function spreadData(data, chipRate) {
+        const nrzData = data.map((bit) => (bit === 1 ? 1 : -1));
+        const spreadData = [];
+        nrzData.forEach((bit) => {
+          for (let i = 0; i < chipRate; i++) {
+            spreadData.push(bit);
+          }
+        });
+        return spreadData;
+      }
+
+      function multiplySignals(signal1, signal2) {
+        return signal1.map((value, index) => value * signal2[index]);
+      }
+
+      function prepareSignals() {
+        if (!validateInput()) return false;
+
+        const dataSequence = document
+          .getElementById("dataInput")
+          .value.split("")
+          .map(Number);
+        const chipRate = parseInt(document.getElementById("chipRate").value);
+
+        signals.data = spreadData(dataSequence, chipRate);
+        signals.pn = generatePNSequence(signals.data.length);
+        signals.output = multiplySignals(signals.data, signals.pn);
+
+        return true;
+      }
+
+      function updateAnimation() {
+        if (isPaused) return;
+
+        const speed = document.getElementById("animationSpeed").value / 1000;
+        progress += speed;
+
+        if (progress >= 1) {
+          progress = 1;
+          document.getElementById("startBtn").disabled = false;
+          document.getElementById("pauseBtn").disabled = true;
+          cancelAnimationFrame(animationFrame);
+        } else {
+          drawSignal("dataCanvas", signals.data, "#4285f4", progress);
+          drawSignal("pnCanvas", signals.pn, "#00bcd4", progress);
+          drawSignal("outputCanvas", signals.output, "#34a853", progress);
+          animationFrame = requestAnimationFrame(updateAnimation);
         }
 
-        updateNoiseIndicator() {
-          const noiseLevel = this.noiseSlider.value;
-          this.noiseIndicator.style.background = `linear-gradient(to right, green ${
-            (1 - noiseLevel) * 100
-          }%, red ${noiseLevel * 100}%)`;
-        }
+        // Update status text
+        document.getElementById("dataStatus").textContent = `${Math.floor(
+          progress * 100
+        )}%`;
+        document.getElementById("pnStatus").textContent = `${Math.floor(
+          progress * 100
+        )}%`;
+        document.getElementById("outputStatus").textContent = `${Math.floor(
+          progress * 100
+        )}%`;
+      }
 
-        createSignalBar(value, color, container) {
-          const bar = document.createElement("div");
-          bar.classList.add(
-            "signal-bar",
-            "w-10",
-            "flex",
-            "flex-col",
-            "items-center",
-            "justify-end",
-            "relative"
-          );
+      function startAnimation() {
+        if (!prepareSignals()) return;
 
-          // Set a base height and scale from there
-          bar.style.height = "100px"; // Base height
-          bar.style.backgroundColor = color;
-          bar.style.opacity = Math.abs(value);
+        progress = 0;
+        isPaused = false;
+        document.getElementById("startBtn").disabled = true;
+        document.getElementById("pauseBtn").disabled = false;
+        document.getElementById("pauseBtn").textContent = "Pause";
 
-          // Limit the scale to a reasonable range (e.g., 0.1 to 2.0)
-          const scaleFactor = Math.max(0.1, Math.min(2.0, Math.abs(value)));
-          bar.style.transform = `scaleY(${scaleFactor})`;
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(updateAnimation);
+      }
 
-          const tooltip = document.createElement("div");
-          tooltip.classList.add("signal-tooltip");
-          tooltip.textContent = value.toFixed(2);
-          bar.appendChild(tooltip);
-
-          container.appendChild(bar);
-          return bar;
-        }
-        
-        initializeSignals() {
-          this.originalSignal = [1, 0, 1, 1, 0];
-          this.spreadSignal = [1, 0, 1, 1, 0, 1, 0, 1];
-          this.noisySignal = [...this.originalSignal];
-
-          this.renderSignals();
-        }
-
-        renderSignals() {
-          [
-            this.originalContainer,
-            this.spreadContainer,
-            this.noisyContainer,
-          ].forEach((container) => (container.innerHTML = ""));
-
-          this.originalSignal.forEach((bit) =>
-            this.createSignalBar(
-              bit,
-              "rgba(59, 130, 246, 0.7)",
-              this.originalContainer
-            )
-          );
-
-          this.spreadSignal.forEach((bit) =>
-            this.createSignalBar(
-              bit,
-              "rgba(16, 185, 129, 0.7)",
-              this.spreadContainer
-            )
-          );
-
-          this.noisySignal.forEach((bit) =>
-            this.createSignalBar(
-              bit,
-              "rgba(239, 68, 68, 0.7)",
-              this.noisyContainer
-            )
-          );
-        }
-
-        runSimulation() {
-          const noiseLevel = parseFloat(this.noiseSlider.value);
-          const spreadFactor = parseInt(this.spreadSlider.value);
-
-          this.noisySignal = this.originalSignal.map((bit) => {
-            const noise = (Math.random() * 2 - 1) * noiseLevel * spreadFactor;
-            return bit + noise;
-          });
-
-          this.renderSignals();
-          this.updateSimulationInfo(noiseLevel, spreadFactor);
-        }
-
-        updateSimulationInfo(noiseLevel, spreadFactor) {
-          this.simulationDetails.textContent = `Noise Level: ${noiseLevel.toFixed(
-            2
-          )} | Spread Factor: ${spreadFactor}`;
-          this.simulationInfo.style.opacity = 1;
-
-          setTimeout(() => {
-            this.simulationInfo.style.opacity = 0;
-          }, 3000);
-        }
-
-        resetSimulation() {
-          this.noisySignal = [...this.originalSignal];
-          this.noiseSlider.value = 0.5;
-          this.spreadSlider.value = 4;
-          this.updateNoiseIndicator();
-          this.renderSignals();
+      function togglePause() {
+        isPaused = !isPaused;
+        document.getElementById("pauseBtn").textContent = isPaused
+          ? "Resume"
+          : "Pause";
+        if (!isPaused) {
+          animationFrame = requestAnimationFrame(updateAnimation);
         }
       }
 
-      // Initialize the advanced simulation
-      document.addEventListener("DOMContentLoaded", () => new AdvancedDSSS());
+      function resetDemo() {
+        cancelAnimationFrame(animationFrame);
+        progress = 0;
+        isPaused = false;
+        signals = { data: [], pn: [], output: [] };
+
+        document.getElementById("startBtn").disabled = false;
+        document.getElementById("pauseBtn").disabled = true;
+        document.getElementById("dataInput").value = "1010";
+        document.getElementById("chipRate").value = "8";
+
+        canvases.forEach((id) => {
+          const canvas = document.getElementById(id);
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          document.getElementById(id.replace("Canvas", "Progress")).style.left =
+            "0";
+          document.getElementById(id.replace("Canvas", "Status")).textContent =
+            "";
+        });
+
+        document.getElementById("dataError").textContent = "";
+        document.getElementById("chipError").textContent = "";
+      }
+
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        canvases.forEach((id) => {
+          const canvas = document.getElementById(id);
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+        });
+        if (signals.data.length > 0) {
+          drawSignal("dataCanvas", signals.data, "#4285f4", progress);
+          drawSignal("pnCanvas", signals.pn, "#00bcd4", progress);
+          drawSignal("outputCanvas", signals.output, "#34a853", progress);
+        }
+      });
     </script>
   </body>
 </html>
